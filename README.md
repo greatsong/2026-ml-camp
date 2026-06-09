@@ -3,4 +3,4 @@
 설치 없이 브라우저만으로 따라 하는 5시간 캠프 학생 페이지입니다.
 각 코드·프롬프트의 **복사** 버튼으로 바로 붙여 쓰세요.
 
-➡️ 바로 보기: https://greatsong.github.io/modeudata-camp/
+➡️ 바로 보기: https://greatsong.github.io/2026-ml-camp/
