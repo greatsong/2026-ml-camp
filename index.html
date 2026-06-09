@@ -195,7 +195,8 @@ y = df["평균기온"]    # 정답: 그 해 평균기온
 model = LinearRegression()
 model.fit(X, y)        # 과거 데이터로 '선'을 학습
 
-pred = model.predict([[2050]])
+# 2050년을 (학습할 때와 같은 '연도' 칸으로) 넣어 예측
+pred = model.predict(pd.DataFrame({"연도": [2050]}))
 print("2050년 예측 기온:", round(pred[0], 1), "도")</pre></div>
     <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트</span><button class="copy">복사</button></div>
     <div class="pbody">연도(X)와 평균기온(y) 데이터가 있어. 선형회귀 모델을 학습시키고, 산점도 위에 예측 직선을 함께 그려 줘. 그리고 2050년 예측 기온도 출력해 줘.</div></div>
