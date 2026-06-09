@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5시간 AI 만들기 — 학생용</title>
+<style>
+:root{
+  --bg:#ffffff; --panel:#ffffff; --ink:#37352f; --sub:#787774; --line:#ececea; --soft:#f7f6f3;
+  --accent:#2e6fdb; --sidebar:#fbfbfa; --hover:#efefee; --btn-bg:#ffffff;
+  --cl-blue:#e9f1f7; --cl-yellow:#faf3df; --cl-purple:#f4f1f8; --cl-green:#edf5ee;
+  --code-bg:#f7f6f3; --code-ink:#37352f;
+  --kw:#9135cf; --str:#0b7a44; --com:#9b9a97; --num:#c2410c; --fn:#2563eb; --bi:#0e7490;
+  --radius:8px;
+}
+html[data-theme="dark"]{
+  --bg:#191919; --panel:#191919; --ink:#e7e7e4; --sub:#9b9a97; --line:#2e2e2c; --soft:#242422;
+  --accent:#5b8def; --sidebar:#202020; --hover:#2a2a28; --btn-bg:#242422;
+  --cl-blue:#1b2b34; --cl-yellow:#2c281b; --cl-purple:#26212d; --cl-green:#1b2a21;
+  --code-bg:#242422; --code-ink:#e7e7e4;
+  --kw:#c792ea; --str:#a5d6a7; --com:#7d7d7a; --num:#f0a868; --fn:#82aaff; --bi:#5fd0d8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);transition:background .2s,color .2s;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",ui-sans-serif,Segoe UI,Roboto,sans-serif;
+  font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:ui-monospace,"SF Mono","JetBrains Mono","D2Coding",Menlo,Consolas,monospace}
+.wrap{display:grid;grid-template-columns:210px 1fr;max-width:920px;margin:0 auto}
+aside{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:20px 10px;border-right:1px solid var(--line);background:var(--sidebar)}
+main{padding:30px 48px 120px;min-width:0;zoom:var(--zoom,1)}
+.brand{font-weight:800;font-size:15px;padding:6px 10px}
+.brand small{display:block;font-weight:500;color:var(--sub);font-size:11.5px;margin-top:4px}
+.nav{margin-top:10px;display:flex;flex-direction:column;gap:1px}
+.nav a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:6px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600}
+.nav a:hover{background:var(--hover)}
+.nav a .dot{width:21px;height:21px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex:0 0 auto}
+.titlerow{display:flex;align-items:flex-start;gap:12px;margin-bottom:6px}
+h1{font-size:30px;margin:0 0 6px;letter-spacing:-.02em;font-weight:800}
+.lead{color:var(--sub);font-size:15.5px;margin:0}
+.lead b{color:var(--ink)}
+.ctrls{display:inline-flex;gap:6px;margin-left:auto;flex:0 0 auto}
+.ctrls button{border:1px solid var(--line);background:var(--btn-bg);color:var(--ink);min-width:34px;height:32px;padding:0 8px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer}
+.ctrls button:hover{background:var(--hover)}
+hr.div{border:0;border-top:1px solid var(--line);margin:28px 0 24px}
+section{scroll-margin-top:14px}
+.sec-h{display:flex;align-items:center;gap:11px;margin:0 0 6px}
+.sec-h .badge{min-width:30px;height:30px;padding:0 8px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px}
+.sec-h h2{font-size:22px;margin:0;font-weight:800;letter-spacing:-.01em}
+.make{font-size:15px;color:var(--sub);margin:0 0 14px;padding-left:41px}
+.make b{color:var(--accent)}
+.steps{margin:8px 0 4px;padding-left:22px}
+.steps li{margin:7px 0;font-size:15.5px}
+.snip{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:14px 0;background:var(--code-bg)}
+.snip-h{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.snip-h .tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:5px;background:rgba(46,111,219,.12);color:var(--accent)}
+.snip-h .tag.p{background:rgba(145,53,207,.13);color:var(--kw)}
+.copy{margin-left:auto;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:700;font-size:13px;padding:6px 13px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+.copy.done{color:#16a34a;border-color:#16a34a}
+pre.hl{margin:0;padding:15px 16px;background:var(--code-bg);color:var(--code-ink);overflow-x:auto;font-size:13.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.pbody{padding:14px 16px;font-size:15px;color:var(--ink);background:var(--cl-purple)}
+.t-kw{color:var(--kw)}.t-str{color:var(--str)}.t-com{color:var(--com)}.t-num{color:var(--num)}.t-fn{color:var(--fn)}.t-bi{color:var(--bi)}
+.warn{display:flex;gap:9px;background:var(--cl-yellow);border-radius:var(--radius);padding:11px 14px;margin:14px 0;font-size:14.5px}
+.warn .ico{flex:0 0 auto}
+.hello{display:flex;gap:10px;background:var(--cl-blue);border-radius:var(--radius);padding:14px 16px;font-size:15px;margin:6px 0}
+.mono{font-size:.92em;background:var(--soft);padding:1px 5px;border-radius:4px}
+.foot{color:var(--sub);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(18px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:9px;font-weight:700;font-size:14.5px;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}.nav{flex-direction:row;flex-wrap:wrap}main{padding:20px 18px 90px}.make{padding-left:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<aside>
+  <div class="brand">🚀 5시간 AI 만들기<small>학생용 · 복사해서 붙여넣기</small></div>
+  <nav class="nav">
+    <a href="#start"><span class="dot" style="background:#787774">✓</span>시작 전</a>
+    <a href="#s1"><span class="dot" style="background:#2e6fdb">1</span>내 첫 웹앱</a>
+    <a href="#s2"><span class="dot" style="background:#0891b2">2</span>AI랑 앱 만들기</a>
+    <a href="#s3"><span class="dot" style="background:#0d9488">3</span>데이터 그래프 앱</a>
+    <a href="#s4"><span class="dot" style="background:#ca8a04">4</span>AI가 미래 예측</a>
+    <a href="#s5"><span class="dot" style="background:#db2777">5</span>분류 + 댓글</a>
+  </nav>
+</aside>
+<main>
+  <div class="titlerow">
+    <div>
+      <h1>5시간 AI 만들기 🚀</h1>
+      <p class="lead">각 칸의 <b>복사</b> 버튼을 누르면 코드랑 프롬프트가 복사돼요. <b>붙여넣기만</b> 하면 끝! 차례대로 따라와요.</p>
+    </div>
+    <div class="ctrls"><button id="fdec" title="글자 작게">A−</button><button id="finc" title="글자 크게">A+</button><button id="theme" title="다크 모드">🌙</button></div>
+  </div>
+
+  <hr class="div">
+
+  <section id="start">
+    <div class="sec-h"><span class="badge" style="background:#787774">✓</span><h2>시작 전</h2></div>
+    <div class="hello"><div class="ico">👋</div><div><b>깃허브</b>와 <b>구글(Colab)</b> 로그인이 되어 있는지 확인해요. 안 되어 있으면 선생님께 말씀드려요. 준비됐으면 1교시로!</div></div>
+  </section>
+
+  <hr class="div">
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-h"><span class="badge" style="background:#2e6fdb">1</span><h2>내 첫 웹앱 만들기</h2></div>
+    <p class="make">오늘 만드는 것 → <b>인터넷에 뜨는 내 웹앱 주소(○○.streamlit.app)</b> 🎉</p>
+    <ol class="steps">
+      <li>선생님이 준 저장소에서 오른쪽 위 <b>Fork</b>를 눌러요.</li>
+      <li><b>share.streamlit.io</b>에 들어가 <b>Continue with GitHub</b>로 로그인해요.</li>
+      <li><b>Create app</b> → 내 저장소 / <span class="mono">main</span> / <span class="mono">app.py</span> → <b>Deploy!</b></li>
+      <li>1~2분 기다리면 내 주소가 떠요. 깃허브에서 <span class="mono">app.py</span>를 아래 코드로 바꿔 봐요.</li>
+    </ol>
+    <div class="snip"><div class="snip-h"><span class="tag">복사 → app.py</span><button class="copy">복사</button></div>
+<pre class="hl">import streamlit as st
+
+st.title("○○의 첫 번째 앱")
+st.write("안녕하세요! 제가 만든 첫 웹앱이에요. 🎉")</pre></div>
+    <div class="warn"><span class="ico">⚠️</span><span>안 뜨면 <b>파일 경로(app.py)</b>와 브랜치(main)를 확인해요. 1~2분은 기다리기!</span></div>
+  </section>
+
+  <hr class="div">
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-h"><span class="badge" style="background:#0891b2">2</span><h2>AI랑 앱 만들기</h2></div>
+    <p class="make">오늘 만드는 것 → 슬라이더·버튼이 있는 <b>움직이는 앱</b></p>
+    <div class="snip"><div class="snip-h"><span class="tag">복사 → 자기소개 앱</span><button class="copy">복사</button></div>
+<pre class="hl">import streamlit as st
+
+st.title("나를 소개하는 앱")
+name = st.text_input("내 이름은?")
+age = st.slider("내 나이는?", 10, 19, 14)
+food = st.selectbox("좋아하는 음식", ["떡볶이", "피자", "치킨", "마라탕"])
+
+if st.button("소개 완성!"):
+    st.write(f"저는 {age}살 {name}이고, {food}을(를) 가장 좋아해요!")
+    st.balloons()</pre></div>
+    <p class="make" style="padding-left:0"><b>AI에게 부탁해 볼까요?</b> 아래 프롬프트를 복사해 AI에게 붙여넣고, 나온 코드를 다시 앱에 붙여넣어요.</p>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트</span><button class="copy">복사</button></div>
+    <div class="pbody">스트림릿 앱 만들어 줘. 슬라이더로 숫자 두 개를 고르면, 두 수를 더한 값과 곱한 값을 보여 주는 앱이야. 초보자가 이해하기 쉽게 짧게.</div></div>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트</span><button class="copy">복사</button></div>
+    <div class="pbody">우리 반 친구 5명의 키 데이터를 막대그래프로 보여 주는 스트림릿 앱 만들어 줘. 이름과 키는 코드 안에 직접 넣어 줘.</div></div>
+    <div class="warn"><span class="ico">⚠️</span><span>AI가 준 코드는 <b>꼭 실행해서 확인</b>해요. AI도 가끔 틀려요!</span></div>
+  </section>
+
+  <hr class="div">
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-h"><span class="badge" style="background:#0d9488">3</span><h2>데이터로 그래프 앱</h2></div>
+    <p class="make">오늘 만드는 것 → 내 관심 데이터로 <b>표 + 그래프</b> 대시보드</p>
+    <div class="snip"><div class="snip-h"><span class="tag">복사 → 대시보드 뼈대</span><button class="copy">복사</button></div>
+<pre class="hl">import streamlit as st
+import pandas as pd
+
+st.title("내 데이터 대시보드")
+
+# 선생님이 준 데이터 주소(CSV)를 붙여 넣어요
+df = pd.read_csv("여기에_데이터_주소.csv")
+
+st.subheader("데이터 미리 보기")
+st.dataframe(df)
+
+st.subheader("그래프")
+st.bar_chart(df)</pre></div>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트</span><button class="copy">복사</button></div>
+    <div class="pbody">df라는 데이터프레임이 있어. 열은 ‘월’과 ‘평균기온’이야. 이걸 꺾은선 그래프로 그리고 스트림릿에서 보여 줘. 제목은 ‘월별 기온’으로.</div></div>
+    <div class="warn"><span class="ico">⚠️</span><span><b>그래프 한 장</b>이면 성공이에요! 욕심내지 말고 하나 완성하고 친구에게 주소를 보내요.</span></div>
+  </section>
+
+  <hr class="div">
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-h"><span class="badge" style="background:#ca8a04">4</span><h2>AI가 미래를 예측해요</h2></div>
+    <p class="make">오늘 하는 것 → 서울 기온으로 <b>“2050년은 몇 도?”</b> 예측 (Colab에서)</p>
+    <div class="snip"><div class="snip-h"><span class="tag">복사 → Colab 셀</span><button class="copy">복사</button></div>
+<pre class="hl">from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X, y)        # X=연도, y=기온 → AI가 '선'을 학습
+
+pred = model.predict([[2050]])
+print("2050년 예측 기온:", round(pred[0], 1), "도")</pre></div>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트</span><button class="copy">복사</button></div>
+    <div class="pbody">연도(X)와 평균기온(y) 데이터가 있어. 선형회귀 모델을 학습시키고, 산점도 위에 예측 직선을 함께 그려 줘. 그리고 2050년 예측 기온도 출력해 줘.</div></div>
+    <div class="warn"><span class="ico">⚠️</span><span>먼 미래 예측은 <b>틀릴 수 있어요</b>. ‘AI가 그은 선’을 너무 믿지는 말기!</span></div>
+  </section>
+
+  <hr class="div">
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-h"><span class="badge" style="background:#db2777">5</span><h2>AI가 분류하고, 댓글을 읽어요</h2></div>
+    <p class="make">오늘 하는 것 → AI로 <b>분류</b> + 유튜브 <b>댓글 요약·번역</b>, 그리고 발표!</p>
+    <div class="snip"><div class="snip-h"><span class="tag">복사 → Colab 셀 (분류)</span><button class="copy">복사</button></div>
+<pre class="hl">from sklearn.ensemble import RandomForestClassifier
+
+model = RandomForestClassifier()
+model.fit(X_train, y_train)        # 특징으로 '유형'을 학습
+
+print("정확도:", model.score(X_test, y_test))</pre></div>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트 (요약)</span><button class="copy">복사</button></div>
+    <div class="pbody">이 댓글들을 한국어로 세 줄로 요약해 줘. 사람들이 가장 많이 말한 점 위주로.</div></div>
+    <div class="snip"><div class="snip-h"><span class="tag p">복사 → AI 프롬프트 (번역)</span><button class="copy">복사</button></div>
+    <div class="pbody">영어로 된 댓글만 골라 한국어로 자연스럽게 번역해 줘.</div></div>
+    <div class="warn"><span class="ico">⚠️</span><span>정확도가 99%여도 <b>함정일 수 있어요</b>. ‘무엇을 놓치면 더 큰일일까?’ 생각해 봐요.</span></div>
+    <div class="hello" style="background:var(--cl-green);margin-top:14px"><div class="ico">🎉</div><div><b>마지막!</b> 5시간 동안 만든 <b>내 앱 주소</b>를 친구에게 보내 보세요. 오늘 만든 게 진짜 ‘내 작품’이에요.</div></div>
+  </section>
+
+  <div class="foot">5시간 AI 만들기 — 학생용 · 모르는 건 언제든 손! 🙋</div>
+</main>
+</div>
+<div class="toast" id="toast">복사됐어요 ✓</div>
+<script>
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+const KW=new Set('False None True and as assert break class continue def del elif else except finally for from global if import in is lambda not or pass raise return try while with yield'.split(' '));
+const BI=new Set('print len range int str float list dict set sum max min sorted predict fit score title write text_input slider selectbox button bar_chart dataframe subheader balloons read_csv'.split(' '));
+function hl(code){
+  let out='',last=0,m;const s=code;
+  const re=/(f"(?:[^"\\]|\\.)*"|f'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|#[^\n]*|\b\d+\.?\d*\b|[A-Za-z_]\w*)/g;
+  while((m=re.exec(s))){
+    out+=esc(s.slice(last,m.index));const tok=m[0];
+    if(tok[0]==='#')out+='<span class="t-com">'+esc(tok)+'</span>';
+    else if(/^(f"|f'|"|')/.test(tok))out+='<span class="t-str">'+esc(tok)+'</span>';
+    else if(/^\d/.test(tok))out+='<span class="t-num">'+esc(tok)+'</span>';
+    else if(KW.has(tok))out+='<span class="t-kw">'+esc(tok)+'</span>';
+    else if(BI.has(tok))out+='<span class="t-bi">'+esc(tok)+'</span>';
+    else{const a=s.slice(m.index+tok.length).match(/^\s*\(/);out+=a?'<span class="t-fn">'+esc(tok)+'</span>':esc(tok);}
+    last=m.index+tok.length;
+  }
+  out+=esc(s.slice(last));return out;
+}
+document.querySelectorAll('pre.hl').forEach(p=>{p.dataset.raw=p.textContent;p.innerHTML=hl(p.textContent);});
+let tt;function toast(){const t=document.getElementById('toast');t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1100);}
+function doCopy(text,btn){const done=()=>{btn.classList.add('done');btn.textContent='복사됨 ✓';toast();setTimeout(()=>{btn.classList.remove('done');btn.textContent='복사';},1400);};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done).catch(()=>fb(text,done));else fb(text,done);}
+function fb(text,cb){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta);cb();}
+document.querySelectorAll('.snip').forEach(sn=>{
+  const btn=sn.querySelector('.copy');const pre=sn.querySelector('pre.hl');const pb=sn.querySelector('.pbody');
+  const txt=pre?(pre.dataset.raw||pre.textContent):(pb?pb.textContent.trim():'');
+  if(btn)btn.addEventListener('click',()=>doCopy(txt,btn));
+});
+const root=document.documentElement;
+function setTheme(d){root.setAttribute('data-theme',d?'dark':'light');document.getElementById('theme').textContent=d?'☀️':'🌙';localStorage.setItem('stu-theme',d?'1':'0');}
+function curZoom(){return parseFloat(getComputedStyle(root).getPropertyValue('--zoom'))||1;}
+function setZoom(z){z=Math.min(1.4,Math.max(.85,Math.round(z*100)/100));root.style.setProperty('--zoom',z);localStorage.setItem('stu-zoom',z);}
+setTheme(localStorage.getItem('stu-theme')==='1');setZoom(parseFloat(localStorage.getItem('stu-zoom'))||1);
+document.getElementById('theme').onclick=()=>setTheme(root.getAttribute('data-theme')!=='dark');
+document.getElementById('finc').onclick=()=>setZoom(curZoom()+0.1);
+document.getElementById('fdec').onclick=()=>setZoom(curZoom()-0.1);
+</script>
+</body>
+</html>
